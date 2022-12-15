@@ -40,7 +40,7 @@ def on_click():
         root = path.abspath(parent)
         model.load_state_dict(
             torch.load(
-                path.join(root, "models/demand_prediction.pt"), map_location=device
+                path.join(root, "models/demand_prediction_2.pt"), map_location=device
             )
         )
         model.to(device)
