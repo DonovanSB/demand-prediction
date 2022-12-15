@@ -34,10 +34,11 @@ def on_click():
     hidden_size = 10
     num_layers = 2
 
-    model = LstmModel(input_dim, hidden_size, num_layers).to(device)
+    model = LstmModel(input_dim, hidden_size, num_layers)
     parent = path.join(Path(__file__).parent.resolve(), pardir)
     root = path.abspath(parent)
     model.load_state_dict(torch.load(path.join(root, "models/demand_prediction.pt")))
+    model.to(device)
 
     metric, pred_arr, y_arr = calculate_metrics(model, scalar, data_loader)
     with container:
