@@ -32,7 +32,7 @@ def on_click():
         data_loader = DataLoader(test_dataset, batch_size, drop_last=True)
 
         input_dim = 1
-        hidden_size = 10
+        hidden_size = 20
         num_layers = 2
 
         model = LstmModel(input_dim, hidden_size, num_layers).to(device)
