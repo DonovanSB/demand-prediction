@@ -37,7 +37,12 @@ def on_click():
     model = LstmModel(input_dim, hidden_size, num_layers).to(device)
     parent = path.join(Path(__file__).parent.resolve(), pardir)
     root = path.abspath(parent)
-    model.load_state_dict(torch.load(path.join(root, "models/demand_prediction.pt")))
+    model.load_state_dict(
+        torch.load(
+            path.join(root, "models/demand_prediction.pt"),
+            map_location=torch.device("cpu"),
+        )
+    )
     model.to(device)
 
     metric, pred_arr, y_arr = calculate_metrics(model, scalar, data_loader)
