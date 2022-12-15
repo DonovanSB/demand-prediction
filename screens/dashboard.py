@@ -21,7 +21,7 @@ def on_click():
     df1 = data.reset_index()["TkW"]
 
     batch_size = 100
-    device = "cuda" if torch.cuda.is_available() else "cpu"
+    device = "cpu"
 
     scalar = MinMaxScaler(feature_range=(0, 1))
     df1 = scalar.fit_transform(np.array(df1).reshape(-1, 1))
