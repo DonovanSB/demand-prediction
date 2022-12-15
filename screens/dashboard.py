@@ -6,23 +6,27 @@ from torch.utils.data import DataLoader
 from sklearn.preprocessing import MinMaxScaler
 
 from services.data_service import DataService
-from services.mode_service import LstmModel
+from services.mode_service import LstmModel, StockDataset, calculate_metrics
 
 
 service = DataService()
 
 
 def on_click():
+    global container
     data = service.df
     # data[data < 0] = 0
     df1 = data.reset_index()["TkW"]
 
+    batch_size = 100
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+
     scalar = MinMaxScaler(feature_range=(0, 1))
     df1 = scalar.fit_transform(np.array(df1).reshape(-1, 1))
 
-    batch_size = 100
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    data_loader = DataLoader(df1, batch_size, drop_last=True)
+    seq_len = 100
+    test_dataset = StockDataset(df1, seq_len)
+    data_loader = DataLoader(test_dataset, batch_size, drop_last=True)
 
     input_dim = 1
     hidden_size = 512
@@ -30,16 +34,21 @@ def on_click():
 
     model = LstmModel(input_dim, hidden_size, num_layers).to(device)
 
+    metric, pred_arr, y_arr = calculate_metrics(model, scalar, data_loader)
+    with container:
+        st.title("Predicciones")
+        st.write("MSE", metric)
+        st.line_chart(pd.DataFrame({"prediction": pred_arr, "real": y_arr}))
+
 
 def dashboard():
-    message = """
-      Sube un archivo excel con los datos de potencia activa para la predicción
-    """
+    global container
     with st.container():
         st.header("Dashboard")
         if service.df is not None:
             st.write("Datos cargados")
             st.line_chart(service.df.TkW)
             st.button("Realizar predicción", on_click=on_click)
+            [container] = st.columns(1)
         else:
             st.write("Por favor carga los datos")
