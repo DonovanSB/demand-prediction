@@ -4,6 +4,8 @@ import numpy as np
 import torch
 from torch.utils.data import DataLoader
 from sklearn.preprocessing import MinMaxScaler
+from pathlib import Path
+from os import path, pardir
 
 from services.data_service import DataService
 from services.mode_service import LstmModel, StockDataset, calculate_metrics
@@ -28,12 +30,14 @@ def on_click():
     test_dataset = StockDataset(df1, seq_len)
     data_loader = DataLoader(test_dataset, batch_size, drop_last=True)
 
-    input_dim = 1 
+    input_dim = 1
     hidden_size = 10
     num_layers = 2
 
     model = LstmModel(input_dim, hidden_size, num_layers).to(device)
-    model.load_state_dict(torch.load('models/demand_prediction.pt'))
+    parent = path.join(Path(__file__).parent.resolve(), pardir)
+    root = path.abspath(parent)
+    model.load_state_dict(torch.load(path.join(root, "models/demand_prediction.pt")))
 
     metric, pred_arr, y_arr = calculate_metrics(model, scalar, data_loader)
     with container:
