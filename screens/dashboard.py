@@ -49,7 +49,7 @@ def on_click():
         with container:
             st.title("Predicciones")
             st.write("MSE", metric)
-            st.line_chart(pd.DataFrame({"prediction": pred_arr, "real": y_arr}))
+            st.line_chart(pd.DataFrame({ "real": y_arr, "prediction": pred_arr}))
 
 
 def dashboard():
