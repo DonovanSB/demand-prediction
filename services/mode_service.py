@@ -9,7 +9,7 @@ from sklearn.preprocessing import MinMaxScaler
 
 batch_size = 100
 seq_len = 100
-device = "cpu"
+device = "cuda" if torch.cuda.is_available() else "cpu"
 
 
 class StockDataset(Dataset):
