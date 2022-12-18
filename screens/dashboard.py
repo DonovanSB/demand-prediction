@@ -59,7 +59,10 @@ def dashboard():
         st.header("Dashboard")
         if service.df is not None:
             st.write("Datos cargados")
-            st.line_chart(service.df.TkW)
+            active_power = service.df.reset_index()['TkW']
+            df1 = active_power[active_power>0]
+            df1 = df1.dropna()
+            st.line_chart(df1)
             st.button("Realizar predicción", on_click=on_click)
             [container] = st.columns(1)
         else:

@@ -7,7 +7,7 @@ from sklearn.metrics import mean_squared_error
 from sklearn.preprocessing import MinMaxScaler
 
 
-batch_size = 100
+batch_size = 64
 seq_len = 100
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
