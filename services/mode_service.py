@@ -47,7 +47,7 @@ def calculate_metrics(model, scalar, data_loader):
 
 
 class LstmModel(nn.Module):
-    def __init__(self, input_dim, hidden_size, num_layers, drop_prob=0.3):
+    def __init__(self, input_dim, hidden_size, num_layers, drop_prob=0.2):
         super(LstmModel, self).__init__()
         self.num_layers = num_layers
         self.input_size = input_dim

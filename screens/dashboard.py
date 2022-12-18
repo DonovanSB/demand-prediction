@@ -21,7 +21,7 @@ def on_click():
         data[data < 0] = 0
         df1 = data.reset_index()["TkW"]
 
-        batch_size = 100
+        batch_size = 64
         device = "cuda" if torch.cuda.is_available() else "cpu"
 
         scalar = MinMaxScaler(feature_range=(0, 1))
@@ -32,7 +32,7 @@ def on_click():
         data_loader = DataLoader(test_dataset, batch_size, drop_last=True)
 
         input_dim = 1
-        hidden_size = 20
+        hidden_size = 50
         num_layers = 2
 
         model = LstmModel(input_dim, hidden_size, num_layers).to(device)
@@ -40,9 +40,10 @@ def on_click():
         root = path.abspath(parent)
         model.load_state_dict(
             torch.load(
-                path.join(root, "models/demand_prediction_2.pt"), map_location=device
+                path.join(root, "models/demand_prediction_3.pt"), map_location=device
             )
         )
+        model.eval()
         model.to(device)
 
         metric, pred_arr, y_arr = calculate_metrics(model, scalar, data_loader)
