@@ -5,7 +5,7 @@ from screens.dashboard import dashboard
 from screens.data_upload import data_upload
 
 
-st.sidebar.write("Menu")
+st.sidebar.write("Menú")
 
 menu = ["Cargar datos", "Dashboard"]
 selected_option = st.sidebar.selectbox("Seleccione una opción", menu)
